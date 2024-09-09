@@ -1,112 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark-mode">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grade Calculator</title>
-  <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: auto;
-      overflow: hidden;
-      padding: 20px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    input {
-      width: 100%;
-      padding: 5px;
-      margin-bottom: 10px;
-    }
-  </style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
+<body class="dark-mode">
   <div class="container">
     <h1>Grade Calculator</h1>
-    <div class="grid">
-      <div>
+    <button id="darkModeToggle"><i class="fas fa-sun"></i></button>
+
+    <div class="semesters-grid">
+      <div class="semester">
         <h2>Semester 1</h2>
-        <input type="number" id="zk1" placeholder="ZK1" step="0.1" min="1" max="6">
-        <input type="number" id="zk2" placeholder="ZK2" step="0.1" min="1" max="6">
+        <div class="grade-row">
+          <span class="grade-label">Deutsch:</span>
+          <select id="deutsch1"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Französisch:</span>
+          <select id="franzosisch1"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Englisch:</span>
+          <select id="englisch1"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Mathematik GF:</span>
+          <select id="mathematikGF1"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Geschichte und Politik:</span>
+          <select id="geschichtePolitik1"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Wirtschaft und Recht:</span>
+          <select id="wirtschaftRecht1"></select>
+        </div>
+        <div class="semester-grade">Semester 1 Grade: <span id="semester1Grade">0.00</span></div>
+        <div id="warning1" class="warning"></div>
       </div>
-      <div>
+
+      <div class="semester">
         <h2>Semester 2</h2>
-        <input type="number" id="hk1" placeholder="1. HK" step="0.1" min="1" max="6">
-        <input type="number" id="pp" placeholder="PP" step="0.1" min="1" max="6">
+        <div class="grade-row">
+          <span class="grade-label">Deutsch:</span>
+          <select id="deutsch2"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Französisch:</span>
+          <select id="franzosisch2"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Englisch:</span>
+          <select id="englisch2"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Mathematik GF:</span>
+          <select id="mathematikGF2"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Naturwissenschaft:</span>
+          <span id="naturwissenschaft2">0.00</span>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Chemie:</span>
+          <select id="chemie2"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Physik:</span>
+          <select id="physik2"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Geschichte und Politik:</span>
+          <select id="geschichtePolitik2"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Wirtschaft und Recht:</span>
+          <select id="wirtschaftRecht2"></select>
+        </div>
+        <div class="semester-grade">Semester 2 Grade: <span id="semester2Grade">0.00</span></div>
+        <div id="warning2" class="warning"></div>
       </div>
-      <div>
-        <h2>Semester 3</h2>
-        <input type="number" id="hk2" placeholder="2. HK" step="0.1" min="1" max="6">
-        <input type="number" id="zkAp" placeholder="ZK AP" step="0.1" min="1" max="6">
-      </div>
-      <div>
+<div class="semester">
+  <h2>Semester 3</h2>
+  <div class="grade-row">
+    <span class="grade-label">Deutsch:</span>
+    <select id="deutsch3"></select>
+  </div>
+  <div class="grade-row">
+    <span class="grade-label">Französisch:</span>
+    <select id="franzosisch3"></select>
+  </div>
+  <div class="grade-row">
+    <span class="grade-label">Englisch:</span>
+    <select id="englisch3"></select>
+  </div>
+  <div class="grade-row">
+    <span class="grade-label">Mathematik SF:</span>
+    <select id="mathematikSF3"></select>
+  </div>
+  <div class="grade-row">
+    <span class="grade-label">Naturwissenschaft:</span>
+    <span id="naturwissenschaft3">0.00</span>
+  </div>
+  <div class="grade-row">
+    <span class="grade-label">Chemie:</span>
+    <select id="chemie3"></select>
+  </div>
+  <div class="grade-row">
+    <span class="grade-label">Physik:</span>
+    <select id="physik3"></select>
+  </div>
+  <div class="semester-grade">Semester 3 Grade: <span id="semester3Grade">0.00</span></div>
+</div>
+
+     <div class="semester">
         <h2>AP</h2>
-        <input type="number" id="apWritten" placeholder="AP schriftlich" step="0.1" min="1" max="6">
-        <input type="number" id="apOral" placeholder="AP mündlich" step="0.1" min="1" max="6">
+        <div class="grade-row">
+          <span class="grade-label">Deutsch AP:</span>
+          <select id="deutschAP"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Französisch AP:</span>
+          <select id="franzosischAP"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Englisch AP:</span>
+          <select id="englischAP"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Mathematik SF AP:</span>
+          <select id="mathematikSFAP"></select>
+        </div>
+	<div class="grade-row">
+	  <span class="grade-label">Naturwissenschaften AP:</span>
+	  <span id="apNaturwissenschaften">-</span>
+	</div>	
+        <div class="grade-row">
+          <span class="grade-label">Chemie AP:</span>
+          <select id="chemieAP"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">Physik AP:</span>
+          <select id="physikAP"></select>
+        </div>
+        <div class="grade-row">
+          <span class="grade-label">BM-Note von Brief Mathematik GF:</span>
+          <select id="bmNoteMathematikGF"></select>
+        </div>
       </div>
     </div>
-    <div class="result">
-      <h2>Final Grade: <span id="finalGrade">0.00</span></h2>
+
+<div class="result">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Final Grades</h2>
+    <div id="passFailIndicator" style="padding: 5px 10px; border-radius: 5px; font-weight: bold;"></div>
+  </div>
+  <table id="finalGradesTable">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Erfahrungsnote</th>
+            <th>AP Grade</th>
+            <th>Final Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- This will be populated by JavaScript -->
+        </tbody>
+      </table>
     </div>
   </div>
-  
-  <script>
-    const grades = {
-      zk1: 0, zk2: 0, hk1: 0, pp: 0, hk2: 0, zkAp: 0, apWritten: 0, apOral: 0
-    };
 
-    function calculateFinalGrade() {
-      const semester1Grade = (grades.zk1 * 1/3 + grades.zk2 * 2/3) / 2;
-      const promotionSemesterGrade = (grades.hk1 + grades.pp) / 2;
-      const finalSemesterGrade = (grades.hk2 + grades.zkAp) / 2;
-
-      const experienceGrade = (semester1Grade + promotionSemesterGrade + finalSemesterGrade) / 3;
-
-      const apGrade = (parseFloat(grades.apWritten) + parseFloat(grades.apOral)) / 2;
-
-      const bmGrade = (experienceGrade + apGrade) / 2;
-
-      return bmGrade * 0.9 + apGrade * 0.1;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedGrades = JSON.parse(localStorage.getItem('grades'));
-      if (savedGrades) {
-        Object.assign(grades, savedGrades);
-        _.forEach(grades, (value, key) => {
-          document.getElementById(key).value = value;
-        });
-        updateFinalGrade();
-      }
-
-      _.forEach(grades, (value, key) => {
-        document.getElementById(key).addEventListener('input', _.debounce((e) => {
-          grades[key] = parseFloat(e.target.value) || 0;
-          updateFinalGrade();
-        }, 300));
-      });
-
-      function updateFinalGrade() {
-        const finalGrade = calculateFinalGrade();
-        document.getElementById('finalGrade').textContent = finalGrade.toFixed(2);
-        localStorage.setItem('grades', JSON.stringify(grades));
-      }
-
-      const darkmode = new Darkmode();
-      darkmode.showWidget();
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

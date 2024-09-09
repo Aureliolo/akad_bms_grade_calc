@@ -1,7 +1,7 @@
 services:
   grade-calculator:
-    build: .
-    ports:
-      - "3000:3000"
+    build: 
+      context: https://github.com/Aureliolo/akad_bms_grade_calc.git
+      dockerfile: Dockerfile
     volumes:
       - .:/app
