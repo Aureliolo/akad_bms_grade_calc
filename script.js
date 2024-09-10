@@ -161,7 +161,7 @@ function updateFinalGradesTable() {
   const tableBody = document.querySelector('#finalGradesTable tbody');
   tableBody.innerHTML = ''; // Clear existing rows
 
-  const subjects = ['Deutsch', 'Französisch', 'Englisch', 'Geschichte und Politik', 'Wirtschaft und Recht', 'Naturwissenschaften', 'Mathematik GF'];
+  const subjects = ['Deutsch', 'Französisch', 'Englisch', 'Geschichte und Politik', 'Wirtschaft und Recht', 'Naturwissenschaften', 'Mathematik GF', 'Mathematik SF'];
   let totalFinalGrade = 0;
   let totalErfahrungsnote = 0;
   let totalAPGrade = 0;
