@@ -111,44 +111,49 @@ function calculateErfahrungsnote(subject) {
 
 function determinePassFailStatus(grades, finalGrades) {
   const requiredSubjects = [
-    'deutsch', 'franzosisch', 'englisch', 'geschichtePolitik', 'wirtschaftRecht', 'chemie', 'physik', 'mathematikGF', 'mathematikSF'
+    'deutsch', 'franzosisch', 'englisch', 'geschichtePolitik', 'wirtschaftRecht', 'chemie', 'physik', 'mathematikGF', 'mathematiksf'
   ];
-  const requiredAP = ['deutschAP', 'franzosischAP', 'englischAP', 'mathematikSFAP', 'chemieAP', 'physikAP'];
+  const requiredAP = ['deutschAP', 'franzosischAP', 'englischAP', 'mathematiksfAP', 'chemieAP', 'physikAP'];
 
-  const allRequiredFilled = requiredSubjects.every(subject =>
-    [1, 2, 3].some(sem => grades[`${subject}${sem}`] && grades[`${subject}${sem}`] !== '')
-  );
+  // Check if all required fields are filled
+  const allFilled = requiredSubjects.every(subject => {
+    if (subject === 'mathematikGF') {
+      return grades.mathematikGF1 && grades.mathematikGF2 && grades.bmNoteMathematikGF;
+    }
+    if (subject === 'mathematiksf') {
+      return grades.mathematiksf3 && grades.mathematiksfAP;
+    }
+    if (subject === 'chemie' || subject === 'physik') {
+      return grades[`${subject}2`] && grades[`${subject}3`] && grades[`${subject}AP`];
+    }
+    return grades[`${subject}1`] && grades[`${subject}2`] && (subject !== 'geschichtePolitik' && subject !== 'wirtschaftRecht' ? grades[`${subject}3`] : true);
+  }) && requiredAP.every(ap => grades[ap]);
 
-  const allAPFilled = requiredAP.every(ap => grades[ap] && grades[ap] !== '');
-  const bmNoteFilled = grades.bmNoteMathematikGF && grades.bmNoteMathematikGF !== '';
-
-  if (!allRequiredFilled || !allAPFilled || !bmNoteFilled || finalGrades.length !== 7) {
+  if (!allFilled) {
     return { status: 'incomplete', message: 'Please fill everything in', color: '#808080' };
   }
 
   const passingGrade = 4.0;
   const failingGrades = finalGrades.filter(grade => grade < passingGrade);
   const totalUnderFour = failingGrades.reduce((sum, grade) => sum + (passingGrade - grade), 0);
-  const overallAverage = finalGrades.reduce((sum, grade) => sum + grade, 0) / finalGrades.length;
-
-  let passes = true;
-  let failureReason = '';
+  
+  // Calculate overall average including the three missing AP grades
+  const sumOfGrades = finalGrades.reduce((sum, grade) => sum + grade, 0);
+  const geschichtePolitikGrade = parseFloat(grades.geschichtePolitik2) || parseFloat(grades.geschichtePolitik1);
+  const wirtschaftRechtGrade = parseFloat(grades.wirtschaftRecht2) || parseFloat(grades.wirtschaftRecht1);
+  const mathematikGFGrade = parseFloat(grades.bmNoteMathematikGF);
+  
+  const totalSum = sumOfGrades + geschichtePolitikGrade + wirtschaftRechtGrade + mathematikGFGrade;
+  const overallAverage = totalSum / (finalGrades.length + 3); // +3 for the missing AP grades
 
   if (failingGrades.length > 2) {
-    passes = false;
-    failureReason = 'More than 2 grades under 4';
+    return { status: 'fail', message: 'Failed: More than 2 grades under 4', color: '#F44336' };
   } else if (totalUnderFour > 2) {
-    passes = false;
-    failureReason = 'Total amount under 4 is more than 2';
+    return { status: 'fail', message: 'Failed: Total amount under 4 is more than 2', color: '#F44336' };
   } else if (overallAverage < passingGrade) {
-    passes = false;
-    failureReason = 'Overall average under 4';
-  }
-
-  if (passes) {
-    return { status: 'pass', message: 'Passed!', color: '#4CAF50' };
+    return { status: 'fail', message: 'Failed: Overall average under 4', color: '#F44336' };
   } else {
-    return { status: 'fail', message: `Does not pass: ${failureReason}`, color: '#F44336' };
+    return { status: 'pass', message: 'Passed!', color: '#4CAF50' };
   }
 }
 
@@ -288,14 +293,17 @@ function updateFinalGradesTable() {
     }
   }
 
-  // Determine pass/fail status
+  const finalGrades = subjects.map(subject => {
+    const finalGradeCell = document.querySelector(`#finalGradesTable tr:nth-child(${subjects.indexOf(subject) + 1}) td:last-child`);
+    return parseFloat(finalGradeCell.textContent);
+  }).filter(grade => !isNaN(grade));
+
   const passFailStatus = determinePassFailStatus(grades, finalGrades);
   const passFailIndicator = document.getElementById('passFailIndicator');
   passFailIndicator.textContent = passFailStatus.message;
   passFailIndicator.style.backgroundColor = passFailStatus.color;
   passFailIndicator.style.color = passFailStatus.status === 'incomplete' ? '#000000' : '#FFFFFF';
 }
-
 function updateAllCalculations() {
   // Calculate and update semester grades
   ['1', '2', '3'].forEach(sem => {
