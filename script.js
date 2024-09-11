@@ -269,15 +269,16 @@ function updateFinalGradesTable() {
     
     const finalAverageCell = averageRow.insertCell(3);
     if (validFinalGradesCount > 0) {
-      const overallAverage = roundToOneTenth(totalFinalGrade / validFinalGradesCount);
-      finalAverageCell.textContent = overallAverage.toFixed(1);
-      
-      if (overallAverage < 4) {
-        finalAverageCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
-      }
-    } else {
-      finalAverageCell.textContent = '-';
+    const overallAverage = roundToOneTenth(totalFinalGrade / validFinalGradesCount);
+    finalAverageCell.textContent = overallAverage.toFixed(1);
+    
+    if (overallAverage < 4) {
+      finalAverageCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
     }
+  } else {
+    finalAverageCell.textContent = '-';
+  }
+}
 
   const passFailStatus = determinePassFailStatus(grades, finalGrades);
   const passFailIndicator = document.getElementById('passFailIndicator');
