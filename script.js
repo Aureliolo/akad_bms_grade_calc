@@ -195,6 +195,11 @@ function updateFinalGradesTable() {
       } else if (subject === 'Wirtschaft und Recht') {
         finalGrade = calculateWirtschaftUndRecht();
         erfahrungsnote = finalGrade;
+      } else if (subject === 'Mathematik SF') {
+        const subjectKey = 'mathematiksf';
+        erfahrungsnote = calculateErfahrungsnote(subjectKey);
+        apGrade = grades[`${subjectKey}AP`] ? parseFloat(grades[`${subjectKey}AP`]) : null;
+      }        
       } else {
         const subjectKey = subject.toLowerCase().replace(/ö/g, 'o').replace(/ü/g, 'u').replace(/ä/g, 'a').replace(/ /g, '');
         erfahrungsnote = calculateErfahrungsnote(subjectKey);
@@ -366,7 +371,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-
 
   const darkModeToggle = document.getElementById('darkModeToggle');
   const icon = darkModeToggle.querySelector('i');
