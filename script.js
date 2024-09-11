@@ -60,7 +60,7 @@ function calculateSemesterGrade(semesterGrades, semesterNumber) {
 
 function calculateFinalGrade(erfahrungsnote, apGrade) {
   if (erfahrungsnote !== null && erfahrungsnote !== undefined && apGrade !== null && apGrade !== undefined) {
-    return roundToHalf((parseFloat(erfahrungsnote) + parseFloat(apGrade)) / 2);
+    return roundToOneTenth((parseFloat(erfahrungsnote) + parseFloat(apGrade)) / 2);
   }
   return null;
 }
@@ -227,7 +227,7 @@ function updateFinalGradesTable() {
         if (roundedFinalGrade < 4) {
           finalGradeCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
         }
-
+      
         totalFinalGrade += roundedFinalGrade;
         validFinalGradesCount++;
         finalGrades.push(roundedFinalGrade);
@@ -278,7 +278,6 @@ function updateFinalGradesTable() {
     } else {
       finalAverageCell.textContent = '-';
     }
-  }
 
   const passFailStatus = determinePassFailStatus(grades, finalGrades);
   const passFailIndicator = document.getElementById('passFailIndicator');
