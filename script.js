@@ -12,7 +12,6 @@ function populateGradeOptions() {
   });
 }
 
-
 function roundToHalf(num) {
   return Math.round(num * 2) / 2;
 }
@@ -37,7 +36,6 @@ function calculateNaturwissenschaftenAP() {
   return null;
 }
 
-
 function calculateSemesterGrade(semesterGrades, semesterNumber) {
   let sum = 0;
   let count = 0;
@@ -60,7 +58,6 @@ function calculateSemesterGrade(semesterGrades, semesterNumber) {
   return count > 0 ? roundToOneTenth(sum / count) : 0;
 }
 
-
 function calculateFinalGrade(erfahrungsnote, apGrade) {
   if (erfahrungsnote !== null && erfahrungsnote !== undefined && apGrade !== null && apGrade !== undefined) {
     return roundToHalf((parseFloat(erfahrungsnote) + parseFloat(apGrade)) / 2);
@@ -68,12 +65,11 @@ function calculateFinalGrade(erfahrungsnote, apGrade) {
   return null;
 }
 
-
 function calculateGeschichteUndPolitik() {
   const grade1 = parseFloat(grades.geschichtePolitik1) || 0;
   const grade2 = parseFloat(grades.geschichtePolitik2) || 0;
   if (grade1 && grade2) {
-    return Math.round((grade1 + grade2) / 2 * 10) / 10; // Round to 1 decimal place
+    return Math.round((grade1 + grade2) / 2 * 10) / 10;
   }
   return null;
 }
@@ -82,7 +78,7 @@ function calculateWirtschaftUndRecht() {
   const grade1 = parseFloat(grades.wirtschaftRecht1) || 0;
   const grade2 = parseFloat(grades.wirtschaftRecht2) || 0;
   if (grade1 && grade2) {
-    return Math.round((grade1 + grade2) / 2 * 10) / 10; // Round to 1 decimal place
+    return Math.round((grade1 + grade2) / 2 * 10) / 10;
   }
   return null;
 }
@@ -91,11 +87,10 @@ function calculateMathematikGF() {
   const grade1 = parseFloat(grades.mathematikGF1) || 0;
   const grade2 = parseFloat(grades.mathematikGF2) || 0;
   if (grade1 && grade2) {
-    return Math.round((grade1 + grade2) / 2 * 10) / 10; // Round to 1 decimal place
+    return Math.round((grade1 + grade2) / 2 * 10) / 10;
   }
   return null;
 }
-
 
 function calculateErfahrungsnote(subject) {
   const subjectGrades = [1, 2, 3]
@@ -108,14 +103,12 @@ function calculateErfahrungsnote(subject) {
     : null;
 }
 
-
 function determinePassFailStatus(grades, finalGrades) {
   const requiredSubjects = [
     'deutsch', 'franzosisch', 'englisch', 'geschichtePolitik', 'wirtschaftRecht', 'chemie', 'physik', 'mathematikGF', 'mathematiksf'
   ];
   const requiredAP = ['deutschAP', 'franzosischAP', 'englischAP', 'mathematiksfAP', 'chemieAP', 'physikAP'];
 
-  // Check if all required fields are filled
   const allFilled = requiredSubjects.every(subject => {
     if (subject === 'mathematikGF') {
       return grades.mathematikGF1 && grades.mathematikGF2 && grades.bmNoteMathematikGF;
@@ -137,14 +130,13 @@ function determinePassFailStatus(grades, finalGrades) {
   const failingGrades = finalGrades.filter(grade => grade < passingGrade);
   const totalUnderFour = failingGrades.reduce((sum, grade) => sum + (passingGrade - grade), 0);
   
-  // Calculate overall average including the three missing AP grades
   const sumOfGrades = finalGrades.reduce((sum, grade) => sum + grade, 0);
   const geschichtePolitikGrade = parseFloat(grades.geschichtePolitik2) || parseFloat(grades.geschichtePolitik1);
   const wirtschaftRechtGrade = parseFloat(grades.wirtschaftRecht2) || parseFloat(grades.wirtschaftRecht1);
   const mathematikGFGrade = parseFloat(grades.bmNoteMathematikGF);
   
   const totalSum = sumOfGrades + geschichtePolitikGrade + wirtschaftRechtGrade + mathematikGFGrade;
-  const overallAverage = totalSum / (finalGrades.length + 3); // +3 for the missing AP grades
+  const overallAverage = totalSum / (finalGrades.length + 3);
 
   if (failingGrades.length > 2) {
     return { status: 'fail', message: 'Failed: More than 2 grades under 4', color: '#F44336' };
@@ -157,14 +149,13 @@ function determinePassFailStatus(grades, finalGrades) {
   }
 }
 
-
 function roundToOneTenth(num) {
   return Math.round(num * 10) / 10;
 }
 
 function updateFinalGradesTable() {
   const tableBody = document.querySelector('#finalGradesTable tbody');
-  tableBody.innerHTML = ''; // Clear existing rows
+  tableBody.innerHTML = '';
 
   const subjects = ['Deutsch', 'Französisch', 'Englisch', 'Geschichte und Politik', 'Wirtschaft und Recht', 'Naturwissenschaften', 'Mathematik GF', 'Mathematik SF'];
   let totalFinalGrade = 0;
@@ -173,7 +164,7 @@ function updateFinalGradesTable() {
   let validFinalGradesCount = 0;
   let validErfahrungsnotenCount = 0;
   let validAPGradesCount = 0;
-  let finalGrades = [];
+  const finalGrades = [];
 
   subjects.forEach(subject => {
     const row = tableBody.insertRow();
@@ -220,10 +211,9 @@ function updateFinalGradesTable() {
       const apGradeCell = row.insertCell(2);
       apGradeCell.textContent = apGrade !== null && apGrade !== undefined ? Number(apGrade).toFixed(1) : '-';
       
-      // Grey out AP Grade for specific subjects
       if (['Geschichte und Politik', 'Wirtschaft und Recht', 'Mathematik GF'].includes(subject)) {
-        apGradeCell.style.backgroundColor = '#808080'; // Grey background
-        apGradeCell.style.color = '#A9A9A9'; // Light grey text
+        apGradeCell.style.backgroundColor = '#808080';
+        apGradeCell.style.color = '#A9A9A9';
       } else if (apGrade !== null && apGrade !== undefined) {
         totalAPGrade += apGrade;
         validAPGradesCount++;
@@ -234,9 +224,8 @@ function updateFinalGradesTable() {
         const roundedFinalGrade = roundToOneTenth(finalGrade);
         finalGradeCell.textContent = roundedFinalGrade.toFixed(1);
         
-        // Highlight final grades under 4 in red
         if (roundedFinalGrade < 4) {
-          finalGradeCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)'; // Light red background
+          finalGradeCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
         }
 
         totalFinalGrade += roundedFinalGrade;
@@ -258,7 +247,6 @@ function updateFinalGradesTable() {
     }
   });
 
-  // Add overall average row
   if (validFinalGradesCount > 0 || validErfahrungsnotenCount > 0 || validAPGradesCount > 0) {
     const averageRow = tableBody.insertRow();
     averageRow.insertCell(0).textContent = 'Overall Average';
@@ -284,19 +272,13 @@ function updateFinalGradesTable() {
       const overallAverage = roundToOneTenth(totalFinalGrade / validFinalGradesCount);
       finalAverageCell.textContent = overallAverage.toFixed(1);
       
-      // Highlight overall average if under 4
       if (overallAverage < 4) {
-        finalAverageCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)'; // Light red background
+        finalAverageCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
       }
     } else {
       finalAverageCell.textContent = '-';
     }
   }
-
-  const finalGrades = subjects.map(subject => {
-    const finalGradeCell = document.querySelector(`#finalGradesTable tr:nth-child(${subjects.indexOf(subject) + 1}) td:last-child`);
-    return parseFloat(finalGradeCell.textContent);
-  }).filter(grade => !isNaN(grade));
 
   const passFailStatus = determinePassFailStatus(grades, finalGrades);
   const passFailIndicator = document.getElementById('passFailIndicator');
@@ -304,8 +286,8 @@ function updateFinalGradesTable() {
   passFailIndicator.style.backgroundColor = passFailStatus.color;
   passFailIndicator.style.color = passFailStatus.status === 'incomplete' ? '#000000' : '#FFFFFF';
 }
+
 function updateAllCalculations() {
-  // Calculate and update semester grades
   ['1', '2', '3'].forEach(sem => {
     const semesterGrades = Object.fromEntries(
       Object.entries(grades).filter(([key]) => key.endsWith(sem))
@@ -319,22 +301,13 @@ function updateAllCalculations() {
     }
   });
 
-  // Update AP Naturwissenschaften
   const apNaturwissenschaften = calculateNaturwissenschaftenAP();
   const apNaturwissenschaftenElement = document.getElementById('apNaturwissenschaften');
   if (apNaturwissenschaftenElement) {
     apNaturwissenschaftenElement.textContent = apNaturwissenschaften ? apNaturwissenschaften.toFixed(1) : '-';
   }
 
-  // Update final grades table
   updateFinalGradesTable();
-}
-
-function calculateFinalGrade(erfahrungsnote, apGrade) {
-  if (erfahrungsnote !== null && erfahrungsnote !== undefined && apGrade !== null && apGrade !== undefined) {
-    return roundToOneTenth((parseFloat(erfahrungsnote) + parseFloat(apGrade)) / 2);
-  }
-  return null;
 }
 
 function saveGrades() {
