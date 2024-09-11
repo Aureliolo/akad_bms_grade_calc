@@ -199,7 +199,6 @@ function updateFinalGradesTable() {
         const subjectKey = 'mathematiksf';
         erfahrungsnote = calculateErfahrungsnote(subjectKey);
         apGrade = grades[`${subjectKey}AP`] ? parseFloat(grades[`${subjectKey}AP`]) : null;
-      }        
       } else {
         const subjectKey = subject.toLowerCase().replace(/ö/g, 'o').replace(/ü/g, 'u').replace(/ä/g, 'a').replace(/ /g, '');
         erfahrungsnote = calculateErfahrungsnote(subjectKey);
