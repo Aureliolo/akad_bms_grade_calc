@@ -221,7 +221,7 @@ function updateFinalGradesTable() {
       
       const finalGradeCell = row.insertCell(3);
       if (finalGrade !== null && finalGrade !== undefined) {
-        const roundedFinalGrade = roundToOneTenth(finalGrade);
+        const roundedFinalGrade = roundToHalf(finalGrade); // Updated to round to half
         finalGradeCell.textContent = roundedFinalGrade.toFixed(1);
         
         if (roundedFinalGrade < 4) {
@@ -269,16 +269,16 @@ function updateFinalGradesTable() {
     
     const finalAverageCell = averageRow.insertCell(3);
     if (validFinalGradesCount > 0) {
-    const overallAverage = roundToOneTenth(totalFinalGrade / validFinalGradesCount);
-    finalAverageCell.textContent = overallAverage.toFixed(1);
+      const overallAverage = roundToOneTenth(totalFinalGrade / validFinalGradesCount); // Still rounding the overall average to one-tenth
+      finalAverageCell.textContent = overallAverage.toFixed(1);
     
-    if (overallAverage < 4) {
-      finalAverageCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+      if (overallAverage < 4) {
+        finalAverageCell.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+      }
+    } else {
+      finalAverageCell.textContent = '-';
     }
-  } else {
-    finalAverageCell.textContent = '-';
   }
-}
 
   const passFailStatus = determinePassFailStatus(grades, finalGrades);
   const passFailIndicator = document.getElementById('passFailIndicator');
